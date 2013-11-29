@@ -105,13 +105,13 @@ App.prototype.getCZML = function(data, viewer) {
         detail.id = s.uuid;
         detail.severity = 1.0;
         detail.start = new Date(s.eventDate);
-        detail.stop = new Date(detail.start + 365);
+        detail.stop = new Date(detail.start.getTime() + 3.15569e10);
 
 		
         czml.push(this.getSampleCZML(detail));
 	}
 	
-	// console.log(JSON.stringify(czml, undefined, 2));
+	console.log(JSON.stringify(czml, undefined, 2));
 	
 	   //console.log('incidentInfo length: ' + incidentInfo);
 
@@ -154,7 +154,7 @@ App.prototype.init = function() {
 	};
 	var viewer = new Cesium.Viewer('cesiumContainer', options);
 	
-	var n = 10;
+	var n = 5;
 	var url = 'http://biocache.ala.org.au/ws/occurrences/search?wkt=POLYGON((150.93 -33.78,151.42 -33.80,151.43 -33.51,151.05 -33.54,150.93 -33.78))&q=matched_name:"Strepera graculina"&fq=rank:species&flimit='
 			+ n + '&pageSize=' + n + '&foffset=0&&facets=names_and_lsid';
 
