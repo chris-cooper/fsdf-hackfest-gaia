@@ -17,15 +17,18 @@ App.prototype.getSampleCZML = function(sample){
 	    var jsDateStart = sample.start, jsDateStop = sample.stop;
 
 	    // https://github.com/AnalyticalGraphicsInc/cesium/issues/399
+	    try {
 	    avail = jsDateStart.toISOString() + '/' + jsDateStop.toISOString();
-
+	    } catch(e) {
+	    	alert("start: "+jsDateStart+ " - "+jsDateStop);
+	    }
 	    var a = new Cesium.Color(0.1, 0.1, 1.0, 1.0);
 	    var b = new Cesium.Color(1.0, 0.1, 0.1, 1.0);
 
-	    var normSeverity = (sample.severity - 1.0) / 3.0;
+	    var normSeverity = sample.severity;
 
 	    var c = mixColors(a, b, normSeverity);
-	    var scale = mix(0.5, 1.0, normSeverity);
+	    var scale = mix(0.1,0.2, normSeverity);
 
 	    // only add a label if we're in '24' mode
 	    var label;
@@ -103,12 +106,14 @@ App.prototype.getCZML = function(data, viewer) {
         detail.lat = s.decimalLatitude;
         detail.lon = s.decimalLongitude;
         detail.id = s.uuid;
-        detail.severity = 1.0;
+        detail.severity = 0.5;
         detail.start = new Date(s.eventDate);
         detail.stop = new Date(detail.start.getTime() + 3.15569e10);
-
-		
-        czml.push(this.getSampleCZML(detail));
+        
+		if( !isNaN(detail.start)) {
+			czml.push(this.getSampleCZML(detail));
+	        console.log('start time: '+detail.start);
+		}
 	}
 	
 	console.log(JSON.stringify(czml, undefined, 2));
@@ -154,7 +159,7 @@ App.prototype.init = function() {
 	};
 	var viewer = new Cesium.Viewer('cesiumContainer', options);
 	
-	var n = 5;
+	var n = 10000;
 	var url = 'http://biocache.ala.org.au/ws/occurrences/search?wkt=POLYGON((150.93 -33.78,151.42 -33.80,151.43 -33.51,151.05 -33.54,150.93 -33.78))&q=matched_name:"Strepera graculina"&fq=rank:species&flimit='
 			+ n + '&pageSize=' + n + '&foffset=0&&facets=names_and_lsid';
 
