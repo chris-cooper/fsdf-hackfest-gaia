@@ -4,7 +4,8 @@
     <title>Hello World!</title>
     <script src="../../Build/Cesium/Cesium.js"></script>
     <style>
-      @import url(../../Build/Cesium/Widgets/CesiumWidget/CesiumWidget.css);
+      /*@import url(../../Build/Cesium/Widgets/CesiumWidget/CesiumWidget.css);*/
+      @import url(../../Build/Cesium/Widgets/Viewer/Viewer.css);
       #cesiumContainer {
         position: absolute;
         top: 0;
@@ -25,9 +26,13 @@
     </style>
   </head>
 <body>
-  <div id="cesiumContainer"></div>
+  <div id="cesiumContainer" class="fullSize"></div>
   <script>
-    var cesiumWidget = new Cesium.CesiumWidget('cesiumContainer');
+  var options = {
+          timeline: true,
+          animation: false,
+      };
+    var cesiumWidget = new Cesium.Viewer('cesiumContainer', options);
   </script>
 </body>
 </html>
