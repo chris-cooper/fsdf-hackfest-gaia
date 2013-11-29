@@ -15,12 +15,8 @@ App.prototype.getSampleCZML = function(sample) {
 	var avail;
 	var jsDateStart = sample.start, jsDateStop = sample.stop;
 
-	// https://github.com/AnalyticalGraphicsInc/cesium/issues/399
-	try {
-		avail = jsDateStart.toISOString() + '/' + jsDateStop.toISOString();
-	} catch (e) {
-		alert("start: " + jsDateStart + " - " + jsDateStop);
-	}
+	avail = jsDateStart.toISOString() + '/' + jsDateStop.toISOString();
+
 	var a = new Cesium.Color(1.0, 1.0, 1.0, 1.0);
 	var b = new Cesium.Color(1.0, 1.0, 1.0, 1.0);
 
@@ -109,15 +105,9 @@ App.prototype.getCZML = function(data, viewer) {
 
 		if (!isNaN(detail.start)) {
 			czml.push(this.getSampleCZML(detail));
-			console.log('start time: ' + detail.start);
+			//console.log('start time: ' + detail.start);
 		}
 	}
-
-	console.log(JSON.stringify(czml, undefined, 2));
-
-	// console.log('incidentInfo length: ' + incidentInfo);
-
-	// console.log(JSON.stringify(extent));
 
 	// Process the CZML, which populates a collection with DynamicObjects
 	var dataSourceCollection24 = new Cesium.DataSourceCollection();
@@ -129,8 +119,6 @@ App.prototype.getCZML = function(data, viewer) {
 
 	// Figure out the time span of the data
 	var availability = dynamicObjectCollection24.computeAvailability();
-
-	console.log("****- " + JSON.stringify(availability, undefined, 2));
 
 	var timeline = viewer.timeline;
 	var clock = viewer.clock;
@@ -165,12 +153,22 @@ App.prototype.addLayer = function(viewer) {
 	provider.alpha = 0.5;
 };
 
+App.prototype.setCam = function(viewer) {
+	var scene = viewer.scene;
+	//Set the camera to look at Australia
+	var e = new Cesium.Cartesian3(-5802994.915164497, 5694926.250766534, -5132847.621559966);
+	var v = new Cesium.Cartesian3(0.5481376741150558, -0.5487699126893898, 0.6311867181291257);
+	var u = new Cesium.Cartesian3(-0.49546208477586695, 0.394948245543276, 0.7736492783502353);
+	scene.getCamera().controller.lookAt(e, Cesium.Cartesian3.add(e, v), u);
+};
+
 App.prototype.init = function() {
 	var options = {
 		timeline : true,
 		animation : true
 	};
 	var viewer = new Cesium.Viewer('cesiumContainer', options);
+	this.setCam(viewer);
 
 	var n = 10000;
 	var url = 'http://biocache.ala.org.au/ws/occurrences/search?wkt=POLYGON((150.93 -33.78,151.42 -33.80,151.43 -33.51,151.05 -33.54,150.93 -33.78))&q=matched_name:"Strepera graculina"&fq=rank:species&flimit='
@@ -178,7 +176,6 @@ App.prototype.init = function() {
 
 	var that = this;
 	function requestSuccess(data) {
-		// console.log(JSON.stringify(data, undefined, 2));
 		that.getCZML(data, viewer);
 	}
 
