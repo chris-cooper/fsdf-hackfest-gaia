@@ -152,6 +152,21 @@ App.prototype.getCZML = function(data, viewer) {
     
 };
 
+App.prototype.addLayer = function(viewer) {
+	var description = {
+			url: 'http://geospace.research.nicta.com.au:8080/admin_bnds/ows?',
+			layers : 'admin_bnds_abs:ADD_2011_AUST',
+			credit: 'NICTA',
+            parameters : {
+                transparent : 'true',
+                format : 'image/png'
+            },
+            proxy : new Cesium.DefaultProxy('/proxy/')
+	};
+	var layer = new Cesium.WebMapServiceImageryProvider(description);
+	viewer.scene._primitives.getCentralBody().getImageryLayers().add(layer);
+};
+
 App.prototype.init = function() {
 	var options = {
 		timeline : true,
@@ -168,7 +183,8 @@ App.prototype.init = function() {
 		// console.log(JSON.stringify(data, undefined, 2));
 		that.getCZML(data, viewer);
 	}
+	
+	this.addLayer(viewer);
 
 	$.getJSON(url, requestSuccess);
-
 };
