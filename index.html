@@ -27,12 +27,14 @@
   </head>
 <body>
   <div id="cesiumContainer" class="fullSize"></div>
+  
+  <!-- LIBS -->
+  <script src="http://codeorigin.jquery.com/jquery-2.0.3.min.js"></script>
+  
+  <script src="app.js"></script>
   <script>
-  var options = {
-          timeline: true,
-          animation: false,
-      };
-    var cesiumWidget = new Cesium.Viewer('cesiumContainer', options);
+  var app = new App();
+  app.init();
   </script>
 </body>
 </html>

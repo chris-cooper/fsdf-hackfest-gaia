@@ -1,0 +1,15 @@
+
+http://biocache.ala.org.au/ws/occurrences/search?wkt=POLYGON((lat1%20lng1,lat2%20lng2,lat3%20lng3))&q=matched_name:"Strepera%20graculina"&fq=rank:species&flimit=MAXRESULTS&pageSize=PAGESIZE&foffset=PAGE*MAXRESULTS&&facets=names_and_lsid
+
+http://biocache.ala.org.au/ws/occurrences/search?wkt=POLYGON((150.93 -33.78,151.42 -33.80,151.43 -33.51,151.05 -33.54,150.93 -33.78))&q=matched_name:"Strepera graculina"&fq=rank:species&flimit=10&pageSize=1&foffset=0&&facets=names_and_lsid
+
+occurrences => list of records.
+each record is a hash with keys:
+  month
+  year
+  decimalLatitude
+  decimalLongitude
+  coordinateUncertaintyInMeters
+  dataResourceName
+
+e.g. data["occurrences"][1]["decimalLatitude"]
